@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <% if (!locals.user) {%>
+   <button onclick="location.href='/signup'">Sign up</button> 
+   <button onclick="location.href='/login'">Log in</button> 
+   <% } else {%>
+    <h1><%= locals.user.name %> <%= locals.user.lastname %></h1>
+    <button onclick="location.href='/logout'">Log out</button>
+    <% if (locals.user.status != 'member') { %> 
+    <button onclick="location.href='/joinclub'">Join club</button>
+    <% } %> 
+    <button onclick="location.href='/createmessage'">Create message</button> 
+    <% } %>
+    <h1>Messages</h1>
+    <div class="messages">
+        <% if (messages) messages.reverse().forEach(e => { %>
+            <div class="message" style="outline: 1px solid black; padding: 0 5px;">
+                <h3><%= e.title %> </h3>
+                <p><%= e.text %></p>
+                <% if (locals.user && locals.user.status != 'user') { %> 
+                <div><%= e.name %> <%= e.lastname %> <%= e.time %> </div>
+                <% } %> 
+                <% if (locals.user && locals.user.status == 'admin') { %> 
+                <button onclick="location.href='/delete/<%= e.id %>'">Delete</button>
+                <% } %> 
+            </div>
+        <% }); %> 
+    </div>
+</body>
+</html>
